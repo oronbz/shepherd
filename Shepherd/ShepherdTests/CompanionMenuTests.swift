@@ -90,8 +90,8 @@ struct CompanionMenuTests {
 
         let items = try harness.avatarItems()
 
-        #expect(items.map(\.title) == ["Ram", "Block", "Soft Spark", "Catpuccino"])
-        #expect(items.map(\.state) == [.on, .off, .off, .off])
+        #expect(items.map(\.title) == ["Ram", "Block", "Soft Spark", "Catpuccino", "Unicorn"])
+        #expect(items.map(\.state) == [.on, .off, .off, .off, .off])
     }
 
     @Test func choosingAnAvatarSwapsHimAndIsRemembered() throws {
@@ -100,7 +100,7 @@ struct CompanionMenuTests {
         try harness.chooseAvatar("Soft Spark")
 
         #expect(harness.chosenAvatars == [.softSpark])
-        #expect(try harness.avatarItems().map(\.state) == [.off, .off, .on, .off])
+        #expect(try harness.avatarItems().map(\.state) == [.off, .off, .on, .off, .off])
         #expect(AvatarPreferenceStore(defaults: harness.defaults).avatar == .softSpark)
     }
 
