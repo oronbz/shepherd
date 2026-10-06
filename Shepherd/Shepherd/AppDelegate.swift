@@ -14,6 +14,7 @@ struct ShepherdApp {
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private let avatars = AvatarPreferenceStore()
+    private let sparkles = SparklePreferenceStore()
     private var companion: CompanionController?
     private var menu: CompanionMenuController?
     private var link: HerdrLink?
@@ -35,7 +36,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             guard let current = library[avatars.avatar] else {
                 throw AnimationCatalog.Failure.missingResource(avatars.avatar.rawValue)
             }
-            let companion = CompanionController(avatar: current)
+            let companion = CompanionController(avatar: current, sparkles: sparkles)
             self.companion = companion
 
             guard !Self.isRunningTests else { return companion.show() }
@@ -52,6 +53,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             let menu = CompanionMenuController(
                 link: link,
                 avatars: avatars,
+                sparkles: sparkles,
                 avatarNames: Avatar.allCases.compactMap { avatar in library[avatar].map { (avatar, $0.name) } }
             )
             menu.onShowReaction = { [weak companion] in companion?.show($0) }

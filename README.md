@@ -10,10 +10,11 @@ The macOS companion runs locally: he floats above ordinary windows, breathes and
 blinks, reacts to hovering, remembers where he is dragged, and quits from his
 own right-click menu. Connected to Herdr, he concentrates while an agent works,
 hops once when a response ends, and waves then holds a questioning pose while
-an agent waits for you. Clicking him takes you to the Herdr pane behind his
+an agent waits for you. The hop and the wave each throw a short burst of
+sparkles around him so they catch your eye from across the screen. Clicking him takes you to the Herdr pane behind his
 reaction and brings its Ghostty terminal forward. His right-click menu holds
-his only controls: pick his avatar (Ram, Block, Soft Spark or Catpuccino), connect to or
-disconnect from Herdr, and quit. He never starts at login: installing the
+his only controls: pick his avatar (Ram, Block, Soft Spark or Catpuccino), turn
+his sparkles on or off, connect to or disconnect from Herdr, and quit. He never starts at login: installing the
 plugin, its startup hook or its `Connect Shepherd` action starts him, or you
 launch him by hand.
 
@@ -87,9 +88,9 @@ copy that is already running; quit that one first. Without the plugin he
 watches Herdr's default socket.
 
 Tests: `Shepherd/ShepherdTests` (Swift Testing) covers every avatar's frame map, animation
-timing, reaction selection, drag-versus-click, position restoration, realistic
+timing, reaction selection, which reactions sparkle, drag-versus-click, position restoration, realistic
 Herdr snapshots and events driving his reactions through a fake socket, and
-his menu's avatar, connect, disconnect and quit controls. `tools/test-plugin.sh`
+his menu's avatar, sparkles, connect, disconnect and quit controls. `tools/test-plugin.sh`
 runs the plugin's Homebrew build step against a fake `brew`. Checks the issues
 ask for that no test can reach are listed in
 [manual verification](docs/manual-verification.md).

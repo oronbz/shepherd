@@ -15,6 +15,7 @@ struct CompanionMenuTests {
         let link: HerdrLink
         let menu: CompanionMenuController
         let avatars: AvatarPreferenceStore
+        let sparkles: SparklePreferenceStore
         var quits = 0
         var chosenAvatars: [Avatar] = []
 
@@ -25,9 +26,11 @@ struct CompanionMenuTests {
             let connection = HerdrConnection(transport: transport, scheduler: scheduler) { "/tmp/herdr.sock" }
             link = HerdrLink(connection: connection, preference: ConnectionPreferenceStore(defaults: defaults)) { false }
             avatars = AvatarPreferenceStore(defaults: defaults)
+            sparkles = SparklePreferenceStore(defaults: defaults)
             menu = CompanionMenuController(
                 link: link,
                 avatars: avatars,
+                sparkles: sparkles,
                 avatarNames: try Avatar.allCases.map { ($0, try AnimationCatalog.bundled($0).name) }
             )
             menu.onChooseAvatar = { [unowned self] in chosenAvatars.append($0) }
@@ -77,12 +80,31 @@ struct CompanionMenuTests {
 
     private let working = HerdrFixtures.agent(pane: "w1:p1", terminal: "term_a", status: "working", session: "sess-a", seq: 40)
 
-    @Test func offersOnlyAvatarConnectionAndQuit() throws {
+    @Test func offersOnlyAvatarSparklesConnectionAndQuit() throws {
         let harness = try Harness()
 
         let titles = harness.titles.filter { !$0.contains("development") }
 
-        #expect(titles == ["Avatar", "Disconnect from Herdr", "Quit Shepherd"])
+        #expect(titles == ["Avatar", "Sparkles", "Disconnect from Herdr", "Quit Shepherd"])
+    }
+
+    @Test func sparklesAreOnByDefault() throws {
+        let harness = try Harness()
+
+        #expect(try harness.item("Sparkles").state == .on)
+        #expect(harness.sparkles.isEnabled)
+    }
+
+    @Test func togglingSparklesIsRemembered() throws {
+        let harness = try Harness()
+
+        try harness.choose("Sparkles")
+        #expect(try harness.item("Sparkles").state == .off)
+        #expect(!SparklePreferenceStore(defaults: harness.defaults).isEnabled)
+
+        try harness.choose("Sparkles")
+        #expect(try harness.item("Sparkles").state == .on)
+        #expect(SparklePreferenceStore(defaults: harness.defaults).isEnabled)
     }
 
     @Test func theAvatarMenuListsEveryAvatarAndChecksRamByDefault() throws {
