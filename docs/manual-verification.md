@@ -8,6 +8,24 @@ Build and run from Xcode (scheme `Shepherd`, destination `My Mac`), or install
 with `tools/install.sh`. The app has no Dock icon and no menu-bar icon:
 Shepherd himself is the whole interface, and right-clicking him opens his menu.
 
+## Sparkles on the hop and the wave
+
+Run a Debug build from Xcode, with any installed copy quit first.
+
+- [ ] Choosing `finished` from the Reaction (development) submenu hops him and
+      throws a short burst of yellow, green and white sparkles that fly past
+      his edges and fade within about two and a half seconds.
+- [ ] Choosing `needs-you` waves him and throws a slightly longer burst of
+      peach, pink and mauve sparkles; the held pose afterwards stays still.
+- [ ] Sparkles follow him when he is dragged mid-burst, and clicks, hovering
+      and dragging work as before, including over the sparkles.
+- [ ] Unchecking Sparkles in his menu stops both bursts, and the choice
+      survives a relaunch; checking it brings them back.
+- [ ] With System Settings > Accessibility > Display > Reduce motion on, he
+      hops and waves without sparkles.
+- [ ] Driven by Herdr (`tools/demo-live-session.sh`), the hop when a response
+      ends and the wave when an agent asks a question each sparkle once.
+
 ## Install through the Herdr plugin (#6)
 
 Verified by the owner on 2026-09-23 with v0.1.0, installing from the
