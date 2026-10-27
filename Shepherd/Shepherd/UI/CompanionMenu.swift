@@ -8,12 +8,21 @@ final class CompanionMenuController: NSObject, NSMenuItemValidation {
 
     private let link: HerdrLink
     private let avatars: AvatarPreferenceStore
+    private let sparkles: SparklePreferenceStore
+    private let sparklesItem: NSMenuItem
     private let connectionItem: NSMenuItem
     private let avatarItems: [NSMenuItem]
 
-    init(link: HerdrLink, avatars: AvatarPreferenceStore, avatarNames: [(Avatar, String)]) {
+    init(
+        link: HerdrLink,
+        avatars: AvatarPreferenceStore,
+        sparkles: SparklePreferenceStore,
+        avatarNames: [(Avatar, String)]
+    ) {
         self.link = link
         self.avatars = avatars
+        self.sparkles = sparkles
+        sparklesItem = NSMenuItem(title: "Sparkles", action: #selector(toggleSparkles), keyEquivalent: "")
         connectionItem = NSMenuItem(title: "", action: #selector(toggleConnection), keyEquivalent: "")
         avatarItems = avatarNames.map { avatar, name in
             let item = NSMenuItem(title: name, action: #selector(chooseAvatar(_:)), keyEquivalent: "")
@@ -35,6 +44,8 @@ final class CompanionMenuController: NSObject, NSMenuItemValidation {
         let avatarItem = NSMenuItem(title: "Avatar", action: nil, keyEquivalent: "")
         avatarItem.submenu = avatarMenu
         menu.addItem(avatarItem)
+        sparklesItem.target = self
+        menu.addItem(sparklesItem)
         menu.addItem(.separator())
 
         connectionItem.target = self
@@ -58,6 +69,11 @@ final class CompanionMenuController: NSObject, NSMenuItemValidation {
         refresh()
     }
 
+    @objc func toggleSparkles() {
+        sparkles.isEnabled.toggle()
+        refresh()
+    }
+
     @objc func chooseAvatar(_ sender: NSMenuItem) {
         guard let avatar = (sender.representedObject as? String).flatMap(Avatar.init(rawValue:)) else { return }
         avatars.avatar = avatar
@@ -69,6 +85,7 @@ final class CompanionMenuController: NSObject, NSMenuItemValidation {
         for item in avatarItems {
             item.state = item.representedObject as? String == avatars.avatar.rawValue ? .on : .off
         }
+        sparklesItem.state = sparkles.isEnabled ? .on : .off
         connectionItem.title = link.isEnabled ? "Disconnect from Herdr" : "Connect to Herdr"
     }
 

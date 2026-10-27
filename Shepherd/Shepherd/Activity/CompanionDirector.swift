@@ -7,6 +7,9 @@ final class CompanionDirector {
     private var celebrating: SessionIdentity?
     private var waiting: SessionIdentity?
 
+    /// Called with each wave and hop the director starts, after Shepherd shows it.
+    var onAttention: (AttentionCue) -> Void = { _ in }
+
     init(behavior: CompanionBehavior, startedAt now: TimeInterval) {
         self.behavior = behavior
         shown = model.state
@@ -22,10 +25,12 @@ final class CompanionDirector {
         if update.state != shown {
             behavior.show(update.state, at: now)
             shown = update.state
+            if update.state == .needsYou { onAttention(.needsYou) }
         }
         if let finished = update.finished.last, update.state != .needsYou {
             behavior.show(.finished, at: now)
             celebrating = finished
+            onAttention(.finished)
         }
     }
 

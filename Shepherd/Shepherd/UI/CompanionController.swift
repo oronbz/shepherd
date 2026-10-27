@@ -7,12 +7,19 @@ final class CompanionController {
     private let panel: CompanionPanel
     private let spriteView: SpriteView
     private let positions: CompanionPositionStore
+    private let sparkles: SparklePreferenceStore
+    private let sparkleOverlay = SparkleOverlay()
     private var frameTimer: Timer?
 
     private var now: TimeInterval { ProcessInfo.processInfo.systemUptime }
 
-    init(avatar: CompanionAvatar, positions: CompanionPositionStore = CompanionPositionStore()) {
+    init(
+        avatar: CompanionAvatar,
+        positions: CompanionPositionStore = CompanionPositionStore(),
+        sparkles: SparklePreferenceStore = SparklePreferenceStore()
+    ) {
         self.positions = positions
+        self.sparkles = sparkles
         let startedAt = ProcessInfo.processInfo.systemUptime
         behavior = CompanionBehavior(catalog: avatar.catalog, startedAt: startedAt)
         director = CompanionDirector(behavior: behavior, startedAt: startedAt)
@@ -36,6 +43,9 @@ final class CompanionController {
         spriteView.onClick = { [weak self] in
             self?.click()
         }
+        director.onAttention = { [weak self] cue in
+            self?.sparkle(cue)
+        }
 
         panel.setFrameOrigin(
             CompanionPlacement.origin(saved: positions.savedOrigin, size: size, visibleFrames: visibleFrames)
@@ -55,6 +65,7 @@ final class CompanionController {
 
     func show() {
         panel.orderFrontRegardless()
+        sparkleOverlay.attach(to: panel)
         render()
     }
 
@@ -67,6 +78,7 @@ final class CompanionController {
     func show(_ animation: CompanionAnimation) {
         behavior.show(animation, at: now)
         render()
+        AttentionCue(animation).map(sparkle)
     }
 
     func apply(_ event: ActivityEvent) {
@@ -87,6 +99,13 @@ final class CompanionController {
 
     func click() {
         navigator?.click(at: now)
+    }
+
+    /// Sparkles are skipped when turned off from his menu, and when the user
+    /// asks macOS to reduce motion.
+    private func sparkle(_ cue: AttentionCue) {
+        guard sparkles.isEnabled, !NSWorkspace.shared.accessibilityDisplayShouldReduceMotion else { return }
+        sparkleOverlay.burst(cue)
     }
 
     private func render() {
