@@ -1,8 +1,8 @@
 import AppKit
 
-/// Floating level plus `.moveToActiveSpace` is what keeps Shepherd above
-/// ordinary windows and on the current desktop space while leaving full-screen
-/// spaces alone; `.canJoinAllSpaces` would put him over full-screen apps too.
+/// Floating level keeps Shepherd above ordinary windows, `.canJoinAllSpaces`
+/// keeps him on every desktop space, and `.fullScreenAuxiliary` lets him in
+/// over full-screen apps too.
 final class CompanionPanel: NSPanel {
     init(size: CGSize) {
         super.init(
@@ -14,7 +14,7 @@ final class CompanionPanel: NSPanel {
 
         isFloatingPanel = true
         level = .floating
-        collectionBehavior = [.moveToActiveSpace, .ignoresCycle]
+        collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .ignoresCycle]
         isOpaque = false
         backgroundColor = .clear
         hasShadow = false

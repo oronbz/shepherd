@@ -2,24 +2,25 @@ import AppKit
 import QuartzCore
 
 /// A click-through window around Shepherd that sparkles bursts out from. It is
-/// a child of his panel so it follows every drag and screen change, and it is
-/// larger than him because his own panel is exactly his size and would clip
-/// anything flying outward.
+/// a child of his panel so it follows every drag, and it is larger than him
+/// because his own panel is exactly his size and would clip anything flying
+/// outward.
 final class SparkleOverlay {
     static let margin: CGFloat = 570
 
     private let window: NSPanel
     private let host = NSView()
+    private weak var panel: NSPanel?
 
     init() {
-        window = NSPanel(
+        window = OverlayPanel(
             contentRect: .zero,
             styleMask: [.borderless, .nonactivatingPanel],
             backing: .buffered,
             defer: false
         )
         window.level = .floating
-        window.collectionBehavior = [.moveToActiveSpace, .ignoresCycle]
+        window.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .ignoresCycle]
         window.isOpaque = false
         window.backgroundColor = .clear
         window.hasShadow = false
@@ -32,22 +33,34 @@ final class SparkleOverlay {
     }
 
     func attach(to panel: NSPanel) {
-        window.setFrame(panel.frame.insetBy(dx: -Self.margin, dy: -Self.margin), display: false)
+        self.panel = panel
         if window.parent !== panel {
             panel.addChildWindow(window, ordered: .above)
         }
     }
 
+    /// Kept to the screen Shepherd is on, since a window spanning two displays
+    /// is drawn on only one of them, and placed afresh for each burst so a
+    /// screen change since the last one can't leave it off-centre.
+    static func placement(around companion: CGRect, on screen: CGRect?) -> (frame: CGRect, center: CGPoint) {
+        let around = companion.insetBy(dx: -margin, dy: -margin)
+        let frame = screen.map { around.intersection($0) } ?? around
+        return (frame, CGPoint(x: companion.midX - frame.minX, y: companion.midY - frame.minY))
+    }
+
     /// Bursts once around the companion; the emitter is removed after its
     /// last particle fades so nothing animates while he is quiet.
     func burst(_ cue: AttentionCue) {
-        guard let root = host.layer else { return }
+        guard let panel, let root = host.layer else { return }
+
+        let placement = Self.placement(around: panel.frame, on: panel.screen?.frame)
+        window.setFrame(placement.frame, display: false)
 
         let style = SparkleStyle(cue)
         let emitter = CAEmitterLayer()
         emitter.frame = root.bounds
         emitter.contentsScale = window.backingScaleFactor
-        emitter.emitterPosition = CGPoint(x: root.bounds.midX, y: root.bounds.midY)
+        emitter.emitterPosition = placement.center
         emitter.emitterShape = .circle
         emitter.emitterMode = .outline
         emitter.emitterSize = CGSize(width: 96, height: 96)
@@ -64,6 +77,14 @@ final class SparkleOverlay {
         DispatchQueue.main.asyncAfter(deadline: .now() + style.emitFor + style.lifetime) {
             emitter.removeFromSuperlayer()
         }
+    }
+}
+
+/// AppKit pulls a window that reaches above the menu bar down below it, which
+/// would throw the sparkles off-centre whenever Shepherd sits near the top.
+private final class OverlayPanel: NSPanel {
+    override func constrainFrameRect(_ frameRect: NSRect, to screen: NSScreen?) -> NSRect {
+        frameRect
     }
 }
 
