@@ -1,0 +1,226 @@
+{
+  "version": 2,
+  "id": "butter-stick",
+  "name": "Butter Stick",
+  "cell": {
+    "width": 128,
+    "height": 128
+  },
+  "anchor": {
+    "x": 64,
+    "y": 112
+  },
+  "desktopScale": 1,
+  "animations": {
+    "idle": {
+      "strip": "idle.png",
+      "frameCount": 8,
+      "playback": "loop",
+      "frames": [
+        {
+          "index": 0,
+          "durationMs": 900
+        },
+        {
+          "index": 1,
+          "durationMs": 500
+        },
+        {
+          "index": 2,
+          "durationMs": 600
+        },
+        {
+          "index": 1,
+          "durationMs": 500
+        },
+        {
+          "index": 0,
+          "durationMs": 700
+        },
+        {
+          "index": 3,
+          "durationMs": 120
+        },
+        {
+          "index": 0,
+          "durationMs": 800
+        },
+        {
+          "index": 4,
+          "durationMs": 160
+        },
+        {
+          "index": 5,
+          "durationMs": 150
+        },
+        {
+          "index": 6,
+          "durationMs": 220
+        },
+        {
+          "index": 7,
+          "durationMs": 290
+        },
+        {
+          "index": 0,
+          "durationMs": 600
+        }
+      ]
+    },
+    "working": {
+      "strip": "working.png",
+      "frameCount": 6,
+      "playback": "loop",
+      "frames": [
+        {
+          "index": 0,
+          "durationMs": 260
+        },
+        {
+          "index": 1,
+          "durationMs": 240
+        },
+        {
+          "index": 2,
+          "durationMs": 240
+        },
+        {
+          "index": 3,
+          "durationMs": 240
+        },
+        {
+          "index": 4,
+          "durationMs": 240
+        },
+        {
+          "index": 5,
+          "durationMs": 240
+        },
+        {
+          "index": 4,
+          "durationMs": 240
+        },
+        {
+          "index": 3,
+          "durationMs": 240
+        },
+        {
+          "index": 2,
+          "durationMs": 240
+        },
+        {
+          "index": 1,
+          "durationMs": 240
+        }
+      ]
+    },
+    "finished": {
+      "strip": "finished.png",
+      "frameCount": 9,
+      "playback": "once",
+      "frames": [
+        {
+          "index": 0,
+          "durationMs": 160
+        },
+        {
+          "index": 1,
+          "durationMs": 100
+        },
+        {
+          "index": 2,
+          "durationMs": 200
+        },
+        {
+          "index": 3,
+          "durationMs": 90
+        },
+        {
+          "index": 4,
+          "durationMs": 140
+        },
+        {
+          "index": 5,
+          "durationMs": 150
+        },
+        {
+          "index": 6,
+          "durationMs": 220
+        },
+        {
+          "index": 7,
+          "durationMs": 290
+        },
+        {
+          "index": 8,
+          "durationMs": 600
+        }
+      ]
+    },
+    "needs-you": {
+      "strip": "needs-you.png",
+      "frameCount": 5,
+      "playback": "hold",
+      "frames": [
+        {
+          "index": 0,
+          "durationMs": 100
+        },
+        {
+          "index": 1,
+          "durationMs": 160
+        },
+        {
+          "index": 2,
+          "durationMs": 120
+        },
+        {
+          "index": 3,
+          "durationMs": 160
+        },
+        {
+          "index": 4,
+          "durationMs": 600
+        }
+      ]
+    },
+    "resting": {
+      "strip": "resting.png",
+      "frameCount": 1,
+      "playback": "hold",
+      "frames": [
+        {
+          "index": 0,
+          "durationMs": 1000
+        }
+      ]
+    },
+    "hover": {
+      "strip": "hover.png",
+      "frameCount": 5,
+      "playback": "loop",
+      "frames": [
+        {
+          "index": 0,
+          "durationMs": 160
+        },
+        {
+          "index": 1,
+          "durationMs": 150
+        },
+        {
+          "index": 2,
+          "durationMs": 220
+        },
+        {
+          "index": 3,
+          "durationMs": 290
+        },
+        {
+          "index": 4,
+          "durationMs": 500
+        }
+      ]
+    }
+  }
+}
