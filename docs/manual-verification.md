@@ -34,8 +34,10 @@ Start with no developer install (`tools/uninstall.sh`) and no cask
       the latest release rather than failing, and he is running again when it
       finishes. Only a same-version reinstall has been run: it took the
       upgrade path without failing and he was running again afterwards.
-- [ ] With an older cask installed (`brew info --cask shepherd` shows it
-      outdated), `brew upgrade --cask shepherd` upgrades him.
+- [x] With an older cask installed (`brew info --cask shepherd` shows it
+      outdated), `brew upgrade --cask shepherd` upgrades him. Verified on
+      2026-11-18, upgrading v0.1.6 to v0.1.7: he was quit, upgraded and
+      reopened.
 
 ## Homebrew cask (#5)
 
