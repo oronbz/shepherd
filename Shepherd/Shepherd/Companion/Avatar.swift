@@ -9,6 +9,7 @@ enum Avatar: String, CaseIterable, Sendable {
     case catpuccino
     case unicorn
     case squishy
+    case butterStick = "butter-stick"
 
     static let standard = Avatar.ram
 

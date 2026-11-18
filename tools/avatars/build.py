@@ -14,6 +14,7 @@ from PIL import Image, ImageDraw
 sys.path.insert(0, str(Path(__file__).parent))
 
 import block
+import butter_stick
 import catpuccino
 import ram
 import soft_spark
@@ -21,7 +22,7 @@ import squishy
 import unicorn
 from ink import CELL, GROUND
 
-AVATARS = (ram, block, soft_spark, catpuccino, unicorn, squishy)
+AVATARS = (ram, block, soft_spark, catpuccino, unicorn, squishy, butter_stick)
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / 'assets' / 'avatars'
 PAPER = (237, 235, 231, 255)
